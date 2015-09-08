@@ -15,29 +15,32 @@ for opt, arg in opts:
 	if opt == '-d':
 	    directory = arg
 	elif opt == '-w':
-	    basewidth = int(arg)
+	    width = int(arg)
 	elif opt == '-h':
-	    baseheight = int(arg)
+	    height = int(arg)
     
-print directory
+f = []
+dirlist = []
+for root, dirs, files in os.walk(directory):
+	dirlist += dirs
 
-def GetDirList():
+        
+for x in dirlist:
+	f.append("{}{}/".format(directory, x))
 
-    dirlist = []
-    for root, dirs, files in os.walk('/Volumes/Users/nbooth/Desktop/shell/'):
-    	dirlist += dirs
-        for x in dirlist:
-        	dirlist.append("{}{}".format(directory, x))
-        	print dirlist
+print f
 
-#def Command():
-                    #    for image in x:
-            	    #        print('Resizing image' + image)
-            	    #        size = (1200, 1200)
-            	    #        img = Image.open(os.path.join(directory, image))
-            	    #        img2 = ImageOps.fit(img, size, Image.AntiAlias)
-            	    #        img2.save(os.path.join(direcotry, 'resized' + image))
-            	    #        print "Batch Processing Complete"
-
-
-GetDirList()
+def Command():
+    for x in f:
+    	y = os.listdir(x)
+        for image in y:
+            if image.endswith('.db'):
+            	pass
+            else:
+                print('Resizing Image' + image)
+                size = (1200, 1200)
+                img = Image.open(os.path.join(x, image))
+                img2 = ImageOps.fit(img, size)
+                img2.save(os.path.join(x, 'resized' + image))
+                print "batch processing complete"
+Command()
