@@ -6,6 +6,8 @@ import getopt
 import PIL
 from PIL import Image, ImageOps
 import time
+import re
+from datetime import datetime
 
 opts, args = getopt.getopt(sys.argv[1:], 'd:w:h:')
 directory = ''
@@ -31,6 +33,7 @@ for x in dirlist:
 
 def Command():
     for x in f:
+    	print x
     	y = os.listdir(x)
         for image in y:
             if image.endswith('.db'):
@@ -38,10 +41,12 @@ def Command():
             elif image.endswith('.ini'):
                 pass
             else:
+                findme = re.compile(r'(?<=\/)[^\/]*(?=\/[^\/]*$)')
                 print(' Resizing Image' + image)
                 size = (1200, 1200)
                 img = Image.open(os.path.join(x, image))
                 img2 = ImageOps.fit(img, size)
-                img2.save(os.path.join(x, 'eti_mc_' + str(time.time()) + '.JPG'))
-                print "batch processing complete"
+                filename = re.findall(findme, x)
+                img2.save(os.path.join(x, str(filename) + '-' + str(datetime.now().strftime('%m-%d-%Y-%H-%M-%S')) + '.JPG'))
+        #        print "batch processing complete"
 Command()
