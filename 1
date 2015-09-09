@@ -5,7 +5,7 @@ import sys
 import getopt
 import PIL
 from PIL import Image, ImageOps
-import time
+
 
 opts, args = getopt.getopt(sys.argv[1:], 'd:w:h:')
 directory = ''
@@ -42,6 +42,7 @@ def Command():
                 size = (1200, 1200)
                 img = Image.open(os.path.join(x, image))
                 img2 = ImageOps.fit(img, size)
-                img2.save(os.path.join(x, 'eti_mc_' + str(time.time()) + '.JPG'))
-                print "batch processing complete"
+                for i in range(100000):
+                    img2.save(os.path.join(x, 'resized' + str(i) + image))
+                print ("batch processing complete {}".format(elapsed))
 Command()
